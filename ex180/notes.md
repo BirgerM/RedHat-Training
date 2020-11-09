@@ -96,10 +96,10 @@ This can be multiple variables or just a single one.
 
 ```
 example:
-	ENV MY_STRING="This is a tutorial"
+	ENV MY_STRING="Example text"
 	or
-	ENV MY_STRING="This is a tutorial" \
-	MY_OTHER_STRING="This is a tutorial"
+	ENV MY_STRING="Some more example text" \
+	MY_OTHER_STRING="Also example text"
 ```
 
 ### Mount a host directory as a data volume.
@@ -182,6 +182,7 @@ Pushing image:
 
 ### Back up an image with its layers and meta data vs. backup a container state.
 Images can be stored using the command podman save.
+Back up an image with its layers and meta data:
 ```
 Example:
 	podman save example -o example.tar.gz
@@ -192,11 +193,22 @@ Example:
 	podman load -i example.tar.gz
 ```
 
+Backup a container state:  
+This will store the state of a running container into an image. The image can be stored in a registry and so on.
+```
+Example:
+	podman commit <container id> <Name for Backup>
+	
+	podman commit 9e0a57248aed webserver-backup
+```
+
 
 ## Run containers locally using Podman
 ### Get container logs.
+The command <b>podman logs</b> will let you see the logs for a container.
 
 ### Listen to container events on the container host.
+The command <b>podman events</b> will let you listen to any events on the host machine.
 
 ### Use Podman inspect.
-
+The command <b>podman inspect</b> will let you view information about containers and images.
