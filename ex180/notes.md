@@ -13,7 +13,7 @@ examples:
 
 
 ### Understand and use RUN instruction.
-The RUN instruction will run a command. This can be a single or multiple commands. To chain multiple commands in one RUN statement use &&.
+The RUN instruction will run a command. This can be a single or multiple commands. To chain multiple commands in one RUN statement use &&. 
 examples:
 	RUN  echo "My first image"
 	RUN yum install httpd -y \
