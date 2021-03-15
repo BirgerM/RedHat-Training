@@ -206,7 +206,7 @@ ResourceQuota sets aggregate quota restrictions enforced per namespace
 ### Control pod placement across cluster nodes
 A taint allows a node to refuse pod to be scheduled unless that pod has a matching toleration.
 
-# The node has the following taints:
+#### The node has the following taints:
 ```console
 [birger@localhost ~]$ oc adm taint nodes node1 key1=value1:NoSchedule
 [birger@localhost ~]$ oc adm taint nodes node2 key2=value2:NoSchedule
