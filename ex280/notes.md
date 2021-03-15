@@ -8,7 +8,7 @@ If the crc cluster is running you display the credentials for the admin account 
 With CodeReadyContainers you can use the `crc console` command to open the oc console in the default browser.
 
 ### Create and delete projects
-```bash
+```console
 # Create project
 oc new-project demo-project
 
@@ -19,7 +19,7 @@ oc delete project demo-project
 ### Import, export, and configure Kubernetes resources
 
 ### Examine resources and cluster status
-```bash
+```console
 # Examine resources
 oc get pods
 
@@ -32,7 +32,7 @@ oc status
 ```
 
 ### View logs
-```bash
+```console
 # View pod logs. See 'oc logs --help' for more options
 oc logs pod/cakephp-ex-5b54f5f7-xr6pf
 ```
@@ -49,7 +49,7 @@ The exam is only 3 hours long, getting familiar with the documentation beforehan
 An easy way to create local users is by using the HTPasswd tool. This is installed by running `yum install httpd-tools -y`. By default crc comes with a pre-configured htpass-secret, to configure your own users either delete this secret or extract and replace it.
 
 ### Configure the HTPasswd identity provider for authentication
-```bash
+```console
 # Extract pre-configured users to htpasswd file
 mkdir some-directory
 oc extract secret/htpass-secret -n openshift-config --to=some-directory
@@ -72,7 +72,7 @@ oc create secret generic htpass-secret --from-file=htpasswd=htpasswd -n openshif
 ```
 
 ### Create and delete users
-```bash
+```console
 # Create user
 oc create user bob
 
@@ -81,7 +81,7 @@ oc delete user bob
 ```
 
 ### Modify user passwords
-```bash
+```console
 # If the users are configured with HTPasswd you can do the following
 oc extract secret/htpass-secret -n openshift-config --to=some-directory
 
@@ -95,7 +95,7 @@ htpasswd -B -b htpasswd bob NoLongerPrincess
 ### Modify user and group permissions
 
 ### Create and manage groups
-```bash
+```console
 # Add a group with no users
 oc adm groups new my-group
 
@@ -106,7 +106,7 @@ oc adm groups new my-group user1 user2
 # Control access to resources
 
 ### Define role-based access controls
-```bash
+```console
 # Add role to user
 oc adm policy add-role-to-user edit user1
 
@@ -115,7 +115,7 @@ oc create role pod-reader --verb=get --verb=list --resource=pod -n my-app
 ```
 
 ### Apply permissions to users
-```bash
+```console
 # Give user edit role
 oc adm policy add-role-to-user edit user1
 
@@ -126,7 +126,7 @@ oc adm policy add-role-to-user pod-reader user1 --role-namespace=my-app -n my-ap
 ### Create and apply secrets to manage sensitive information
 
 ### Create service accounts and apply permissions using security context constraints
-```bash
+```console
 # Create service account
 oc create serviceaccount my-service-account
 
@@ -139,7 +139,7 @@ oc adm policy add-scc-to-user privileged -z my-service-account
 ### Troubleshoot software defined networking
 
 ### Create and edit external routes
-```bash
+```console
 # Create an edge route named "my-route" that exposes frontend service.
 oc create route edge my-route --service=frontend
 
@@ -150,14 +150,14 @@ oc edit route my-route
 ### Control cluster network ingress
 
 ### Create a self signed certificate
-```bash
+```console
 # This will create a x509 certificate and a private key
 # '-nodes' option ensures that the key file is not encrypted
 openssl req -new -x509 -nodes -out selfsigned.crt -keyout selfsigned.key
 ```
 
 ### Secure routes using TLS certificates
-```bash
+```console
 # Create a secure route using the self signed certificate
 oc create route edge my-edge --service=my-service --cert=selfsigned.crt --key=selfsigned.key
 ```
@@ -166,13 +166,13 @@ oc create route edge my-edge --service=my-service --cert=selfsigned.crt --key=se
 
 ### Limit resource usage
 ResourceQuota sets aggregate quota restrictions enforced per namespace
-```bash
+```console
 # To limit quota used in a namespace
 oc create quota my-quota --hard=cpu=1,memory=1G,pods=2,services=3,replicationcontrollers=2,resourcequotas=1,secrets=5,persistentvolumeclaims=10
 ```
 
 ### Scale applications to meet increased demand
-```bash
+```console
 # Scale the deployment to 3 replicas manually
 oc scale deployment/my-deployment --replicas=3
 
@@ -183,7 +183,7 @@ oc autoscale deployment my-app --min=2 --max=10 --cpu-percent=80
 ### Control pod placement across cluster nodes
 A taint allows a node to refuse pod to be scheduled unless that pod has a matching toleration.
 
-```bash
+```console
 # The node has the following taints:
 oc adm taint nodes node1 key1=value1:NoSchedule
 oc adm taint nodes node2 key2=value2:NoSchedule
@@ -203,7 +203,7 @@ tolerations:
 ```
 
 #### Example
-```bash
+```console
 # Configure taints on your node
 oc adm taint node crc-ctj2r-master-0 app=postgres:NoSchedule 
 
@@ -277,7 +277,7 @@ spec:
 ....
 ```
 
-```bash
+```console
 # Verify that pods are now getting created
 oc get pods
 ```
@@ -288,7 +288,7 @@ https://docs.openshift.com/container-platform/4.5/machine_management/
 ```
 
 ### Manually control the number of cluster workers
-```bash
+```console
 # Edit the machine set:
 oc edit machineset <machineset> -n openshift-machine-api
 
@@ -302,7 +302,7 @@ oc scale --replicas=2 machineset <machineset> -n openshift-machine-api
 ### Automatically scale the number of cluster workers
 https://docs.openshift.com/container-platform/4.5/machine_management/applying-autoscaling.html
 
-```bash
+```console
 # Create a YAML file for the ClusterAutoscaler resource that contains the customized resource definition.
 vim autoscaler.yaml
 
