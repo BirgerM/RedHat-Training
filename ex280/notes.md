@@ -181,6 +181,106 @@ oc autoscale deployment my-app --min=2 --max=10 --cpu-percent=80
 ```
 
 ### Control pod placement across cluster nodes
+A taint allows a node to refuse pod to be scheduled unless that pod has a matching toleration.
+
+```bash
+# The node has the following taints:
+oc adm taint nodes node1 key1=value1:NoSchedule
+oc adm taint nodes node2 key2=value2:NoSchedule
+```
+
+The pod has the following tolerations:
+```yaml
+tolerations:
+- key: "key1"
+  operator: "Equal"
+  value: "value1"
+  effect: "NoSchedule"
+- key: "key1"
+  operator: "Equal"
+  value: "value1"
+  effect: "NoExecute"
+```
+
+#### Example
+```bash
+# Configure taints on your node
+oc adm taint node crc-ctj2r-master-0 app=postgres:NoSchedule 
+
+# Create a new test project
+oc new-project test-project
+
+# Create a new application
+oc new-app rails-postgresql-example
+
+# Verify that pods are stuck in pending state
+oc get pods
+
+# Edit deploymentconfig and insert tolerations as shown below
+oc edit deploymentconfig postgresql
+```
+```yaml
+# Example output from edit command
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    description: Defines how to deploy the database
+    openshift.io/generated-by: OpenShiftNewApp
+    template.alpha.openshift.io/wait-for-ready: "true"
+  creationTimestamp: "2021-03-15T17:52:36Z"
+  generation: 3
+  labels:
+    app: rails-postgresql-example
+    template: rails-postgresql-example
+  name: postgresql
+  namespace: testing-2
+  resourceVersion: "49392"
+  selfLink: /apis/apps.openshift.io/v1/namespaces/testing-2/deploymentconfigs/postgresql
+  uid: 2966689b-5938-4742-accf-3c28824a56ad
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    name: postgresql
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        name: postgresql
+      name: postgresql
+    spec:
+      tolerations:
+      - key: app
+        value: postgres
+        effect: NoSchedule
+      containers:
+      - env:
+        - name: POSTGRESQL_USER
+          valueFrom:
+            secretKeyRef:
+              key: database-user
+              name: rails-postgresql-example
+        - name: POSTGRESQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-password
+              name: rails-postgresql-example
+....
+```
+
+```bash
+# Verify that pods are now getting created
+oc get pods
+```
 
 # Configure cluster scaling
 ```
