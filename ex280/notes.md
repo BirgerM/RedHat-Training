@@ -10,10 +10,10 @@ With CodeReadyContainers you can use the `crc console` command to open the oc co
 ### Create and delete projects
 ```console
 # Create project
-oc new-project demo-project
+[birger@localhost ~]$ oc new-project demo-project
 
 # Delete project
-oc delete project demo-project
+[birger@localhost ~]$ oc delete project demo-project
 ```
 
 ### Import, export, and configure Kubernetes resources
@@ -21,20 +21,20 @@ oc delete project demo-project
 ### Examine resources and cluster status
 ```console
 # Examine resources
-oc get pods
+[birger@localhost ~]$ oc get pods
 
-oc explain pods
+[birger@localhost ~]$ oc explain pods
 
-oc describe pods
+[birger@localhost ~]$ oc describe pods
 
 # View cluster status
-oc status
+[birger@localhost ~]$ oc status
 ```
 
 ### View logs
 ```console
 # View pod logs. See 'oc logs --help' for more options
-oc logs pod/cakephp-ex-5b54f5f7-xr6pf
+[birger@localhost ~]$ oc logs pod/cakephp-ex-5b54f5f7-xr6pf
 ```
 
 ### Monitor cluster events and alerts
@@ -51,45 +51,45 @@ An easy way to create local users is by using the HTPasswd tool. This is install
 ### Configure the HTPasswd identity provider for authentication
 ```console
 # Extract pre-configured users to htpasswd file
-mkdir some-directory
-oc extract secret/htpass-secret -n openshift-config --to=some-directory
-cat some-directory/htpasswd
+[birger@localhost ~]$ mkdir some-directory
+[birger@localhost ~]$ oc extract secret/htpass-secret -n openshift-config --to=some-directory
+[birger@localhost ~]$ cat some-directory/htpasswd
 
 # Add user 'bob' with password 'princess' to htpasswd file
-htpasswd -B -b htpasswd bob princess
+[birger@localhost ~]$ htpasswd -B -b htpasswd bob princess
 
 # Since the htpass-secret already exists we can replace it by running this command.
 # '--dry-run' ensures that no changes are applied by the 'oc create secret' command
 # '-o yaml' outputs the contents in yaml format.
 # 'oc replace -f -' Takes the yaml content as input and replaces the old secret with the new one.
-oc create secret generic htpass-secret --from-file=htpasswd=htpasswd --dry-run -o yaml -n openshift-config | oc replace -f -
+[birger@localhost ~]$ oc create secret generic htpass-secret --from-file=htpasswd=htpasswd --dry-run -o yaml -n openshift-config | oc replace -f -
 
 # Its also possible to delete the htpass-secret and apply a new one
-oc delete secret htpass-secret -n openshift-config
+[birger@localhost ~]$ oc delete secret htpass-secret -n openshift-config
 
 # Create new htpass-secret
-oc create secret generic htpass-secret --from-file=htpasswd=htpasswd -n openshift-config
+[birger@localhost ~]$ oc create secret generic htpass-secret --from-file=htpasswd=htpasswd -n openshift-config
 ```
 
 ### Create and delete users
 ```console
 # Create user
-oc create user bob
+[birger@localhost ~]$ oc create user bob
 
 # Delete user
-oc delete user bob
+[birger@localhost ~]$ oc delete user bob
 ```
 
 ### Modify user passwords
 ```console
 # If the users are configured with HTPasswd you can do the following
-oc extract secret/htpass-secret -n openshift-config --to=some-directory
+[birger@localhost ~]$ oc extract secret/htpass-secret -n openshift-config --to=some-directory
 
 # Remove the user you want to change the password for
-vim some-directory/htpasswd
+[birger@localhost ~]$ vim some-directory/htpasswd
 
 # Add the user again with a new password
-htpasswd -B -b htpasswd bob NoLongerPrincess
+[birger@localhost ~]$ htpasswd -B -b htpasswd bob NoLongerPrincess
 ```
 
 ### Modify user and group permissions
@@ -97,10 +97,10 @@ htpasswd -B -b htpasswd bob NoLongerPrincess
 ### Create and manage groups
 ```console
 # Add a group with no users
-oc adm groups new my-group
+[birger@localhost ~]$ oc adm groups new my-group
 
 # Add a group with two users
-oc adm groups new my-group user1 user2
+[birger@localhost ~]$ oc adm groups new my-group user1 user2
 ```
 
 # Control access to resources
@@ -108,19 +108,19 @@ oc adm groups new my-group user1 user2
 ### Define role-based access controls
 ```console
 # Add role to user
-oc adm policy add-role-to-user edit user1
+[birger@localhost ~]$ oc adm policy add-role-to-user edit user1
 
 # Create new role
-oc create role pod-reader --verb=get --verb=list --resource=pod -n my-app
+[birger@localhost ~]$ oc create role pod-reader --verb=get --verb=list --resource=pod -n my-app
 ```
 
 ### Apply permissions to users
 ```console
 # Give user edit role
-oc adm policy add-role-to-user edit user1
+[birger@localhost ~]$ oc adm policy add-role-to-user edit user1
 
 # Add user to namespaced role
-oc adm policy add-role-to-user pod-reader user1 --role-namespace=my-app -n my-app
+[birger@localhost ~]$ oc adm policy add-role-to-user pod-reader user1 --role-namespace=my-app -n my-app
 ```
 
 ### Create and apply secrets to manage sensitive information
@@ -128,10 +128,10 @@ oc adm policy add-role-to-user pod-reader user1 --role-namespace=my-app -n my-ap
 ### Create service accounts and apply permissions using security context constraints
 ```console
 # Create service account
-oc create serviceaccount my-service-account
+[birger@localhost ~]$ oc create serviceaccount my-service-account
 
 # Add the 'privileged' security context constraint to the service account my-service-account in the current namespace
-oc adm policy add-scc-to-user privileged -z my-service-account
+[birger@localhost ~]$ oc adm policy add-scc-to-user privileged -z my-service-account
 ```
 
 # Configure networking components
@@ -141,10 +141,10 @@ oc adm policy add-scc-to-user privileged -z my-service-account
 ### Create and edit external routes
 ```console
 # Create an edge route named "my-route" that exposes frontend service.
-oc create route edge my-route --service=frontend
+[birger@localhost ~]$ oc create route edge my-route --service=frontend
 
 # Edit
-oc edit route my-route
+[birger@localhost ~]$ oc edit route my-route
 ```
 
 ### Control cluster network ingress
@@ -153,13 +153,13 @@ oc edit route my-route
 ```console
 # This will create a x509 certificate and a private key
 # '-nodes' option ensures that the key file is not encrypted
-openssl req -new -x509 -nodes -out selfsigned.crt -keyout selfsigned.key
+[birger@localhost ~]$ openssl req -new -x509 -nodes -out selfsigned.crt -keyout selfsigned.key
 ```
 
 ### Secure routes using TLS certificates
 ```console
 # Create a secure route using the self signed certificate
-oc create route edge my-edge --service=my-service --cert=selfsigned.crt --key=selfsigned.key
+[birger@localhost ~]$ oc create route edge my-edge --service=my-service --cert=selfsigned.crt --key=selfsigned.key
 ```
 
 # Configure pod scheduling
@@ -168,16 +168,16 @@ oc create route edge my-edge --service=my-service --cert=selfsigned.crt --key=se
 ResourceQuota sets aggregate quota restrictions enforced per namespace
 ```console
 # To limit quota used in a namespace
-oc create quota my-quota --hard=cpu=1,memory=1G,pods=2,services=3,replicationcontrollers=2,resourcequotas=1,secrets=5,persistentvolumeclaims=10
+[birger@localhost ~]$ oc create quota my-quota --hard=cpu=1,memory=1G,pods=2,services=3,replicationcontrollers=2,resourcequotas=1,secrets=5,persistentvolumeclaims=10
 ```
 
 ### Scale applications to meet increased demand
 ```console
 # Scale the deployment to 3 replicas manually
-oc scale deployment/my-deployment --replicas=3
+[birger@localhost ~]$ oc scale deployment/my-deployment --replicas=3
 
 # Configure autoscaling
-oc autoscale deployment my-app --min=2 --max=10 --cpu-percent=80
+[birger@localhost ~]$ oc autoscale deployment my-app --min=2 --max=10 --cpu-percent=80
 ```
 
 ### Control pod placement across cluster nodes
@@ -185,8 +185,8 @@ A taint allows a node to refuse pod to be scheduled unless that pod has a matchi
 
 ```console
 # The node has the following taints:
-oc adm taint nodes node1 key1=value1:NoSchedule
-oc adm taint nodes node2 key2=value2:NoSchedule
+[birger@localhost ~]$ oc adm taint nodes node1 key1=value1:NoSchedule
+[birger@localhost ~]$ oc adm taint nodes node2 key2=value2:NoSchedule
 ```
 
 The pod has the following tolerations:
@@ -205,19 +205,19 @@ tolerations:
 #### Example
 ```console
 # Configure taints on your node
-oc adm taint node crc-ctj2r-master-0 app=postgres:NoSchedule 
+[birger@localhost ~]$ oc adm taint node crc-ctj2r-master-0 app=postgres:NoSchedule 
 
 # Create a new test project
-oc new-project test-project
+[birger@localhost ~]$ oc new-project test-project
 
 # Create a new application
-oc new-app rails-postgresql-example
+[birger@localhost ~]$ oc new-app rails-postgresql-example
 
 # Verify that pods are stuck in pending state
-oc get pods
+[birger@localhost ~]$ oc get pods
 
 # Edit deploymentconfig and insert tolerations as shown below
-oc edit deploymentconfig postgresql
+[birger@localhost ~]$ oc edit deploymentconfig postgresql
 ```
 ```yaml
 # Example output from edit command
@@ -279,7 +279,7 @@ spec:
 
 ```console
 # Verify that pods are now getting created
-oc get pods
+[birger@localhost ~]$ oc get pods
 ```
 
 # Configure cluster scaling
@@ -290,13 +290,13 @@ https://docs.openshift.com/container-platform/4.5/machine_management/
 ### Manually control the number of cluster workers
 ```console
 # Edit the machine set:
-oc edit machineset <machineset> -n openshift-machine-api
+[birger@localhost ~]$ oc edit machineset <machineset> -n openshift-machine-api
 
 # Scale down the machine set to 0:
-oc scale --replicas=0 machineset <machineset> -n openshift-machine-api
+[birger@localhost ~]$ oc scale --replicas=0 machineset <machineset> -n openshift-machine-api
 
 # Scale up the machine set as needed:
-oc scale --replicas=2 machineset <machineset> -n openshift-machine-api
+[birger@localhost ~]$ oc scale --replicas=2 machineset <machineset> -n openshift-machine-api
 ```
 
 ### Automatically scale the number of cluster workers
@@ -307,7 +307,7 @@ https://docs.openshift.com/container-platform/4.5/machine_management/applying-au
 vim autoscaler.yaml
 
 # Create the resource in the cluster
-oc create -f autoscaler.yaml
+[birger@localhost ~]$ oc create -f autoscaler.yaml
 ```
 ```yaml
 apiVersion: "autoscaling.openshift.io/v1"
