@@ -8,32 +8,36 @@ If the crc cluster is running you display the credentials for the admin account 
 With CodeReadyContainers you can use the `crc console` command to open the oc console in the default browser.
 
 ### Create and delete projects
+#### Create project
 ```console
-# Create project
 [birger@localhost ~]$ oc new-project demo-project
+```
 
-# Delete project
+#### Delete project
+```console
 [birger@localhost ~]$ oc delete project demo-project
 ```
 
 ### Import, export, and configure Kubernetes resources
 
 ### Examine resources and cluster status
+#### Examine resources
 ```console
-# Examine resources
 [birger@localhost ~]$ oc get pods
 
 [birger@localhost ~]$ oc explain pods
 
 [birger@localhost ~]$ oc describe pods
+```
 
-# View cluster status
+#### View cluster status
+```console
 [birger@localhost ~]$ oc status
 ```
 
 ### View logs
+#### View pod logs. See `oc logs --help` for more options
 ```console
-# View pod logs. See 'oc logs --help' for more options
 [birger@localhost ~]$ oc logs pod/cakephp-ex-5b54f5f7-xr6pf
 ```
 
