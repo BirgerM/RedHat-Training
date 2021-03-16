@@ -54,6 +54,7 @@ With CodeReadyContainers you can use the `crc console` command to open the oc co
 This can be done by logging into the oc console and navigating to the monitoring section.
 
 ### Troubleshoot common cluster events and alerts
+Common events will be shown in the event log. This might be a good place to start for troubleshooting.
 
 ### Use product documentation
 The exam is only 3 hours long, getting familiar with the documentation beforehand might be a smart choice.
@@ -96,6 +97,7 @@ An easy way to create local users is by using the HTPasswd tool. This is install
 
 ### Create and delete users
 #### Create user
+You will most likely want create new users through the HTPasswd identity provider.
 ```console
 [birger@localhost ~]$ oc create user bob
 ```
@@ -103,6 +105,11 @@ An easy way to create local users is by using the HTPasswd tool. This is install
 #### Delete user
 ```console
 [birger@localhost ~]$ oc delete user bob
+```
+
+#### Delete identity
+```console
+[birger@localhost ~]$ oc delete identity my_htpasswd_provider:bob
 ```
 
 ### Modify user passwords
