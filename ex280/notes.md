@@ -19,8 +19,17 @@ With CodeReadyContainers you can use the `crc console` command to open the oc co
 ```
 
 ### Import, export, and configure Kubernetes resources
+#### Import some resource
+```console
+[birger@localhost ~]$ oc create -f some-resource.yaml
+```
+#### Export some resource
+```console
+[birger@localhost ~]$ oc export secret/htpass-secret -n openshift-config
+```
 
 ### Examine resources and cluster status
+
 #### Examine resources
 ```console
 [birger@localhost ~]$ oc get pods
@@ -80,10 +89,16 @@ An easy way to create local users is by using the HTPasswd tool. This is install
 [birger@localhost ~]$ oc create secret generic htpass-secret --from-file=htpasswd=htpasswd -n openshift-config
 ```
 
+#### View the configured OAuth
+```console
+[birger@localhost ~]$ oc edit OAuth
+```
+
 ### Create and delete users
 #### Create user
 ```console
 [birger@localhost ~]$ oc create user bob
+```
 
 #### Delete user
 ```console
@@ -91,18 +106,15 @@ An easy way to create local users is by using the HTPasswd tool. This is install
 ```
 
 ### Modify user passwords
-#### If the users are configured with HTPasswd you can do the following
+#### Extract the secret from openshift
 ```console
 [birger@localhost ~]$ oc extract secret/htpass-secret -n openshift-config --to=some-directory
 ```
 
-#### Remove the user you want to change the password for. Open the file and delete the line for that user.
+#### Edit the users password
 ```console
-[birger@localhost ~]$ vim some-directory/htpasswd
-```
-#### Add the user again with a new password
-```console
-[birger@localhost ~]$ htpasswd -B -b htpasswd bob NoLongerPrincess
+[birger@localhost ~]$ htpasswd -b B htpasswd bob NoLongerPrincess
+Updating password for user bob
 ```
 
 ### Modify user and group permissions
