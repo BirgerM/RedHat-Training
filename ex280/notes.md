@@ -47,7 +47,7 @@ With CodeReadyContainers you can use the `crc console` command to open the oc co
 ### View logs
 #### View pod logs. See `oc logs --help` for more options
 ```console
-[birger@localhost ~]$ oc logs pod/cakephp-ex-5b54f5f7-xr6pf
+[birger@localhost ~]$ oc logs pod/postgresql-2-7k9bx
 ```
 
 ### Monitor cluster events and alerts
