@@ -142,12 +142,14 @@ all:
 ### Populate variables with data from external sources using lookup plugins
 https://www.devopsschool.com/blog/deep-dive-into-lookup-plugins-in-ansible-with-example/
 
-```
-vars:
-  motd_value: "{{ lookup('file', '/etc/motd') }}"
-tasks:
-  - debug:
-      msg: "motd value is {{ motd_value }}"
+```yaml
+---
+- hosts: all
+  vars:
+    motd_value: "{{ lookup('file', '/etc/motd') }}"
+  tasks:
+    - debug:
+        msg: "motd value is {{ motd_value }}"
 ```
 
 ### Use lookup and query functions to template data from external sources into playbooks and deployed template files
@@ -167,6 +169,31 @@ tasks:
 https://www.educba.com/ansible-filters/
 
 ### Inspect, validate, and manipulate variables containing networking information with filters
+*ipaddr() is a Jinja2 filter designed to provide an interface to netaddr Python package from within Ansible. It can operate on strings or lists of items, test various data to check if they are valid IP addresses and manipulate the input data to extract requested information. ipaddr() works both with IPv4 and IPv6 addresses in various forms, there are also additional functions available to manipulate IP subnets and MAC addresses.*
+
+https://docs.ansible.com/ansible/2.4/playbooks_filters_ipaddr.html
+
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters_ipaddr.html
+
+```yaml
+Example us of an IPv4 filter:
+
+{{ myvar | ipv4 }}
+
+And similar example of an IPv6 filter:
+
+{{ myvar | ipv6 }}
+```
+
+```yaml
+Here’s an example test to look for IPv4 addresses:
+
+'192.168.0.1'       -> 192.168.0.1
+'192.168.32.0/24'   -> 192.168.32.0/24
+'fe80::100/10'      -> False
+45443646733         -> False
+'523454/24'         -> 0.7.252.190/24
+```
 
 # Delegate tasks
 
@@ -186,6 +213,10 @@ https://docs.ansible.com/ansible/latest/user_guide/playbooks_delegation.html
 ```
 
 # Install Ansible Tower
+
+If you have an RedHat Developer account you can get a 60 day trial version of Ansible Tower: https://www.redhat.com/en/technologies/management/ansible/try-it?extIdCarryOver=true&sc_cid=701f2000001OH7YAAW
+
+Its also possible to install awx.
 
 https://www.unixarena.com/2019/03/ansible-tower-awx-installing-configuring-tower-cli.html/
 
@@ -207,11 +238,29 @@ as root: ./setup.sh
 
 ### Create Ansible Tower users and teams and make associations of one to the other
 
+```
+Creating a new User:
+1. Users
+2. Create a new user
+3. Fill in the required information
+4. Click Save
+```
+
+```
+Associating a User to a Team:
+1. Teams
+2. Select the Team you want to associate the user to
+3. Click USERS tab
+4. Click Add User
+5. Select the User you want to add
+```
+
 # Manage inventories and credentials
 
-### Manage advanced inventories
-
+How to import inventory file with CLI tool:
 awx-manage inventory_import --inventory-name Linux_UA_Hosts --source hosts_add
+
+### Manage advanced inventories
 
 ### Create a dynamic inventory from an identity management server or a database server
 
@@ -259,3 +308,20 @@ https://www.unixarena.com/2019/03/ansible-tower-awx-trigger-ansible-job-using-re
 ### Back up an instance of Ansible Tower
 
 https://www.unixarena.com/2019/03/backup-restore-ansible-awx-tower-cli.html/
+
+
+# Labs
+
+Some labs i found browsing the web
+
+### ANSIBLE GETTING STARTED
+https://goetzrieger.github.io/ansible-getting-started/
+
+### ANSIBLE TOWER GETTING STARTED
+https://goetzrieger.github.io/ansible-tower-getting-started/
+
+### ANSIBLE TOWER ADVANCED
+https://goetzrieger.github.io/ansible-tower-advanced/
+
+### ANSIBLE COLLECTIONS
+https://goetzrieger.github.io/ansible-collections/
