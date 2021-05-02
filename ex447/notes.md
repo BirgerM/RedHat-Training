@@ -1,6 +1,6 @@
 Some sources that might be handy:
-`https://ansible.github.io/workshops/exercises/ansible_rhel/`
-`https://docs.ansible.com/ansible/2.8/user_guide/playbooks_best_practices.html#`
+*`https://ansible.github.io/workshops/exercises/ansible_rhel/`
+*`https://docs.ansible.com/ansible/2.8/user_guide/playbooks_best_practices.html#`
 
 Study points for the exam
 You should be able to accomplish the following grouped tasks without assistance:
