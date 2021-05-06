@@ -74,26 +74,64 @@ Its also possible to have subdirectories to store the variables. This applies to
 ```
 
 ### Use special variables to override the host, port, or remote user Ansible uses for a specific host
-```console
--l 'SUBSET', --limit 'SUBSET'
-          further limit selected hosts to an additional pattern
-
--u 'REMOTE_USER', --user 'REMOTE_USER'
-          connect as this user (default=None)
-```
-
+These can be configured in hosts file etc.
 ```
 General for all connections:
 
 ansible_host
 The name of the host to connect to, if different from the alias you wish to give to it.
+
 ansible_port
 The ssh port number, if not 22
+
 ansible_user
 The default ssh user name to use.
 ```
 
+Example where 'ansible_host' is set to 'localhost' for all the hosts in the group 'sputnik':
+```
+---
+all:
+  children:
+    sputnik:
+      hosts:
+        lab-web01:
+        lab-web02:
+        lab-web03:
+      vars:
+        ansible_host: localhost
+```
+
+Example where 'ansible_host' is set to 'localhost' for the host 'lab-web01':
+```
+---
+all:
+  children:
+    sputnik:
+      hosts:
+        lab-web01:
+          ansible_host: localhost
+        lab-web02:
+        lab-web03:
+```
+
+```console
+-l 'SUBSET', --limit 'SUBSET'
+          further limit selected hosts to an additional pattern
+```
+Example:
+This will target all hosts that begin with lab:
+```console
+  [birger@tower]$ ansible-playbook delegation.yaml -i sputnik/hosts -l 'lab*'
+```
+
+```
+-u 'REMOTE_USER', --user 'REMOTE_USER'
+          connect as this user (default=None)
+```
+
 ### Set up directories containing multiple host variable files for some of your managed hosts
+
 *You can also add group_vars/ and host_vars/ directories to your playbook directory. The ansible-playbook command looks for these directories in the current working directory by default. Other Ansible commands (for example, ansible, ansible-console, and so on) will only look for group_vars/ and host_vars/ in the inventory directory. If you want other commands to load group and host variables from a playbook directory, you must provide the --playbook-dir option on the command line. If you load inventory files from both the playbook directory and the inventory directory, variables in the playbook directory will override variables set in the inventory directory.
 
 Keeping your inventory file and variables in a git repo (or other version control) is an excellent way to track changes to your inventory and host variables.*
@@ -101,9 +139,95 @@ Keeping your inventory file and variables in a git repo (or other version contro
 Example:
 ```console
 /etc/ansible/host_vars/
-└── my-server.testing
+└── my-server
     ├── cluster_settings.yaml
     └── db_settings.yaml
+```
+
+#### Directory Layout for best practice:
+
+Example one:
+```
+The top level of the directory would contain files and directories like so:
+
+production                # inventory file for production servers
+staging                   # inventory file for staging environment
+
+group_vars/
+   group1.yml             # here we assign variables to particular groups
+   group2.yml
+host_vars/
+   hostname1.yml          # here we assign variables to particular systems
+   hostname2.yml
+
+library/                  # if any custom modules, put them here (optional)
+module_utils/             # if any custom module_utils to support modules, put them here (optional)
+filter_plugins/           # if any custom filter plugins, put them here (optional)
+
+site.yml                  # master playbook
+webservers.yml            # playbook for webserver tier
+dbservers.yml             # playbook for dbserver tier
+
+roles/
+    common/               # this hierarchy represents a "role"
+        tasks/            #
+            main.yml      #  <-- tasks file can include smaller files if warranted
+        handlers/         #
+            main.yml      #  <-- handlers file
+        templates/        #  <-- files for use with the template resource
+            ntp.conf.j2   #  <------- templates end in .j2
+        files/            #
+            bar.txt       #  <-- files for use with the copy resource
+            foo.sh        #  <-- script files for use with the script resource
+        vars/             #
+            main.yml      #  <-- variables associated with this role
+        defaults/         #
+            main.yml      #  <-- default lower priority variables for this role
+        meta/             #
+            main.yml      #  <-- role dependencies
+        library/          # roles can also include custom modules
+        module_utils/     # roles can also include custom module_utils
+        lookup_plugins/   # or other types of plugins, like lookup in this case
+
+    webtier/              # same kind of structure as "common" was above, done for the webtier role
+    monitoring/           # ""
+    fooapp/               # ""
+```
+
+Example two:
+```
+inventories/
+   production/
+      hosts               # inventory file for production servers
+      group_vars/
+         group1.yml       # here we assign variables to particular groups
+         group2.yml
+      host_vars/
+         hostname1.yml    # here we assign variables to particular systems
+         hostname2.yml
+
+   staging/
+      hosts               # inventory file for staging environment
+      group_vars/
+         group1.yml       # here we assign variables to particular groups
+         group2.yml
+      host_vars/
+         stagehost1.yml   # here we assign variables to particular systems
+         stagehost2.yml
+
+library/
+module_utils/
+filter_plugins/
+
+site.yml
+webservers.yml
+dbservers.yml
+
+roles/
+    common/
+    webtier/
+    monitoring/
+    fooapp/
 ```
 
 ### Override the name used in the inventory file with a different name or IP address
@@ -121,6 +245,9 @@ all:
 # Manage task execution
 
 ### Control privilege execution
+
+You can specify 'become' for both tasks and plays.
+
 ```yaml
 - name: Ensure the httpd service is running
   service:
@@ -262,6 +389,7 @@ How to import inventory file with CLI tool:
 awx-manage inventory_import --inventory-name Linux_UA_Hosts --source hosts_add
 
 ### Manage advanced inventories
+https://goetzrieger.github.io/ansible-tower-advanced/9-advanced-inventories/
 
 ### Create a dynamic inventory from an identity management server or a database server
 
