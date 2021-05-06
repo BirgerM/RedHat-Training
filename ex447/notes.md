@@ -115,16 +115,19 @@ all:
         lab-web03:
 ```
 
+Limit the hosts the playbook is run against:
 ```console
 -l 'SUBSET', --limit 'SUBSET'
           further limit selected hosts to an additional pattern
 ```
+
 Example:
 This will target all hosts that begin with lab:
 ```console
   [birger@tower]$ ansible-playbook delegation.yaml -i sputnik/hosts -l 'lab*'
 ```
 
+Set remote user:
 ```
 -u 'REMOTE_USER', --user 'REMOTE_USER'
           connect as this user (default=None)
@@ -132,9 +135,9 @@ This will target all hosts that begin with lab:
 
 ### Set up directories containing multiple host variable files for some of your managed hosts
 
-*You can also add group_vars/ and host_vars/ directories to your playbook directory. The ansible-playbook command looks for these directories in the current working directory by default. Other Ansible commands (for example, ansible, ansible-console, and so on) will only look for group_vars/ and host_vars/ in the inventory directory. If you want other commands to load group and host variables from a playbook directory, you must provide the --playbook-dir option on the command line. If you load inventory files from both the playbook directory and the inventory directory, variables in the playbook directory will override variables set in the inventory directory.
+*You can also add group_vars/ and host_vars/ directories to your playbook directory. The ansible-playbook command looks for these directories in the current working directory by default. Other Ansible commands (for example, ansible, ansible-console, and so on) will only look for group_vars/ and host_vars/ in the inventory directory. If you want other commands to load group and host variables from a playbook directory, you must provide the --playbook-dir option on the command line. If you load inventory files from both the playbook directory and the inventory directory, variables in the playbook directory will override variables set in the inventory directory.*
 
-Keeping your inventory file and variables in a git repo (or other version control) is an excellent way to track changes to your inventory and host variables.*
+*Keeping your inventory file and variables in a git repo (or other version control) is an excellent way to track changes to your inventory and host variables.*
 
 Example:
 ```console
