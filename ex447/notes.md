@@ -439,8 +439,52 @@ https://www.unixarena.com/2019/03/ansible-tower-awx-trigger-ansible-job-using-re
 
 ### Back up an instance of Ansible Tower
 
-https://www.unixarena.com/2019/03/backup-restore-ansible-awx-tower-cli.html/
+- `https://www.unixarena.com/2019/03/backup-restore-ansible-awx-tower-cli.html/`
 
+```console
+[birger@tower ansible-automation-platform-setup-bundle-1.2.1-1]$ ./setup.sh -h
+Usage: ./setup.sh [Options] [-- Ansible Options]
+
+Options:
+  -i INVENTORY_FILE     Path to ansible inventory file (default: inventory)
+  -e EXTRA_VARS         Set additional ansible variables as key=value or YAML/JSON
+                        i.e. -e bundle_install=false will force an online install
+
+  -b                    Perform a database backup in lieu of installing
+  -r                    Perform a database restore in lieu of installing
+  -k                    Generate and distribute a new SECRET_KEY
+
+  -h                    Show this help message and exit
+
+Ansible Options:
+  Additional options to be passed to ansible-playbook can be added
+  following the -- separator
+```
+
+```console
+[birger@tower ansible-automation-platform-setup-bundle-1.2.1-1]$ cat roles/backup/defaults/main.yml
+---
+backup_dir: /var/backups/tower/
+backup_dest: "{{ playbook_dir }}/"
+```
+
+Backing up Ansible Tower DB:
+```console
+[birger@tower ansible-automation-platform-setup-bundle-1.2.1-1]$ sudo ./setup.sh -b
+
+[birger@tower ansible-automation-platform-setup-bundle-1.2.1-1]$ sudo file tower-backup-2021-05-07-08\:43\:54.tar.gz
+tower-backup-2021-05-07-08:43:54.tar.gz: gzip compressed data, last modified: Fri May  7 15:44:12 2021, from Unix, original size 327680
+```
+
+Setting a custom directory to store the backups:
+```console
+[birger@tower ansible-automation-platform-setup-bundle-1.2.1-1]$ sudo ./setup.sh -b -e backup_dest='/opt/tower-backups'
+
+[birger@tower ansible-automation-platform-setup-bundle-1.2.1-1]$ ll /opt/tower-backups/
+total 312
+-rw-------. 1 root root 318345 May  7 08:53 tower-backup-2021-05-07-08:53:24.tar.gz
+lrwxrwxrwx. 1 root root     58 May  7 08:53 tower-backup-latest.tar.gz -> /opt/tower-backups/tower-backup-2021-05-07-08:53:24.tar.gz
+```
 
 # Labs
 
