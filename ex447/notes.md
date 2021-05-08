@@ -270,6 +270,16 @@ You can specify 'become' for both tasks and plays.
 
 # Transform data with filters and plugins
 
+To list available plugins:
+```console
+ansible-doc -t lookup -l
+```
+
+List information about a specific plugin:
+```console
+ansible-doc -l lookup file
+```
+
 ### Populate variables with data from external sources using lookup plugins
 https://www.devopsschool.com/blog/deep-dive-into-lookup-plugins-in-ansible-with-example/
 
@@ -280,7 +290,7 @@ https://www.devopsschool.com/blog/deep-dive-into-lookup-plugins-in-ansible-with-
     motd_value: "{{ lookup('file', '/etc/motd') }}"
   tasks:
     - debug:
-        msg: "motd value is {{ motd_value }}"
+        msg: "{{ motd_value }}"
 ```
 
 ### Use lookup and query functions to template data from external sources into playbooks and deployed template files
@@ -297,7 +307,23 @@ https://www.devopsschool.com/blog/deep-dive-into-lookup-plugins-in-ansible-with-
 ```
 
 ### Implement loops using structures other than simple lists using lookup plugins and filters
-https://www.educba.com/ansible-filters/
+- `https://www.educba.com/ansible-filters/`
+
+```yaml
+- name: Looping over dictionaries
+  gather_facts: false
+  hosts: localhost
+  vars:
+    tag_data:
+      Environment: dev
+      Application: payment
+  become: false
+  tasks:
+    - name: Using dict2items
+      ansible.builtin.debug:
+        msg: "{{ item.key }} - {{ item.value }}"
+      loop: "{{ tag_data | dict2items }}"
+```
 
 ### Inspect, validate, and manipulate variables containing networking information with filters
 *ipaddr() is a Jinja2 filter designed to provide an interface to netaddr Python package from within Ansible. It can operate on strings or lists of items, test various data to check if they are valid IP addresses and manipulate the input data to extract requested information. ipaddr() works both with IPv4 and IPv6 addresses in various forms, there are also additional functions available to manipulate IP subnets and MAC addresses.*
