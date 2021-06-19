@@ -14,6 +14,7 @@ https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/provisi
 
 # Configure Red Hat Satellite server
 ## Create and configure organizations and locations
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/managing_locations
 
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/managing_organizations
@@ -21,17 +22,22 @@ https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content
 ```
 Administer -> Locations -> New Location
 ```
+
 ```
 Administer -> Organizations -> New Organization
 ```
 
 ## Create and configure users and roles
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/administering_red_hat_satellite/chap-red_hat_satellite-administering_red_hat_satellite-users_and_roles
+
 Administer -> Users -> Create User
 Administer -> Roles -> Create Role
 
 ## Create and configure Ansible® roles
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/administering_red_hat_satellite/chap-red_hat_satellite-administering_red_hat_satellite-managing_ansible_roles
+
 *In Satellite, you can import Ansible roles and Red Hat Enterprise Linux system roles to help with automation of routine tasks. Ansible is enabled by default on Satellite and Capsule. If you use custom or third party Ansible roles, you must add the roles to the /etc/ansible/roles directory of the Capsule or Satellite where you want to use them.*
 
 ```
@@ -41,6 +47,7 @@ Configure -> Ansible Variables
 
 ## Create and configure Ansible variables
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/administering_red_hat_satellite/chap-red_hat_satellite-administering_red_hat_satellite-managing_ansible_roles#sect-Red_Hat_Satellite-Administering_Red_Hat_Satellite-Creating_Ansible_Variables
+
 ```
 Configure -> Ansible Variables -> New Ansible Variable
 ```
@@ -52,7 +59,6 @@ https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/importing_red_hat_content#Importing_Red_Hat_Content-Synchronizing_Red_Hat_Repositories
 
 For Web UI Users
-
 1. In the Satellite web UI, navigate to Content > Products and select the product that contains the repositories that you want to synchronize.
 2. Select the repositories that you want to synchronize and click Sync Now.
 
@@ -72,6 +78,7 @@ Content -> Content Views -> Create New View
 ```
 
 ## Create custom content channels and populate them with software
+
 ## Create and configure development life cycles
 Content -> Lifecycle Environment Paths -> Create Environment Path
 
@@ -84,7 +91,9 @@ https://access.redhat.com/articles/3359321
 *Sign package
 
 # Manage systems
+
 ## Create activation keys
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/managing_activation_keys
 ```
 Content -> Activation Keys -> Create Activation Key
@@ -97,21 +106,25 @@ Content -> Activation Keys -> 'Key' -> Host Collections -> Add -> 'Select Host C
 ```
 
 ## Configure bare-metal deployments
+
 Hosts -> Create Hosts
 
 # Manage Ansible roles
+
 ## Import Ansible roles
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/administering_red_hat_satellite/chap-red_hat_satellite-administering_red_hat_satellite-managing_ansible_roles
 
 Put roles on Satellite server in /etc/ansible/roles, then import from console.
 
 ## Configure Ansible roles
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/managing_hosts/using_ansible_roles
 ```
 Configure -> Ansible -> Roles
 ```
 
 # Manage Ansible variables
+
 ## Import Ansible variables from an Ansible role
 ```
 To import Ansible variables, complete the following steps:
@@ -122,6 +135,7 @@ To import Ansible variables, complete the following steps:
 ```
 
 ## Configure an Ansible variable
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/administering_red_hat_satellite/chap-red_hat_satellite-administering_red_hat_satellite-managing_ansible_roles
 ```
 # Create new Ansible Variable
@@ -134,8 +148,11 @@ Configure -> Ansible Variables -> 'Choose a variable from the list.'
 ```
 
 # Manage clients
+
 ## Register an existing client to a Satellite server
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/managing_activation_keys#Managing_Activation_Keys-Using_Activation_Keys
+
 ```console
 # On the host, clear any old data to ensure updated data is uploaded correctly.
 subscription-manager clean
@@ -150,12 +167,14 @@ subscription-manager register --org="Default_Organization" \
 ```
 
 ## Apply errata to clients
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/managing_errata#applying_errata_to_a_host
 ```
 Content -> Errata -> Select Errata -> Apply Errata
 ```
 
 ## Install custom software on clients
+
 These are the main steps that has to be done in order to install custom software on clients
 1. Create GPG key
 1. Create Product
@@ -165,11 +184,13 @@ These are the main steps that has to be done in order to install custom software
 
 
 ### Create GPG key
+
 ```
 Content -> Content Credentials -> Create Content Credential
 ```
 
 ### Create Product
+
 ```
 # Create Product
 Content -> Products -> Create -> Product
@@ -179,6 +200,7 @@ Newly Created Product -> Repositories -> New Repository
 ```
 
 ### Create Content View
+
 ```
 # Create Content View
 Content -> Content View -> Create New View
@@ -188,6 +210,7 @@ Newly Created View -> Yum Content -> Repositories -> Add -> Select Repository ->
 ```
 
 ### Create Activation Key
+
 ```
 Content -> Activation Keys -> Create Activation Key
 
@@ -196,11 +219,13 @@ Newly Created Activation Key -> Subscriptions -> Add -> Select Product
 ```
 
 ### Subscribe Host
+
 ```
 [foo@bar ~]$ sudo subscription-manager register --org="Foo" --activationkey="Bar"
 ```
 
 ## Use Satellite server to remotely execute scripts on clients
+
 ### On foreman we have to enable the plugins for remote-execution first.
 ```
 foreman-installer --enable-foreman-plugin-remote-execution \
@@ -208,6 +233,7 @@ foreman-installer --enable-foreman-plugin-remote-execution \
 ```
 
 ### Create Custom Job Template
+
 1. Create Template
   * Hosts -> Job Templates -> New Job Template
 1. Add Name
@@ -222,12 +248,14 @@ echo "Hello World from <%= @host.name %>!"
 Go to Hosts -> All Hosts -> Choose a host -> Schedule Remote Job -> Select the Template -> Run Job -> Click the Host on the bottom to see details about the run.
 
 ## Assign an Ansible role to an existing client
+
 The short answer to this is:
 ```
 Hosts -> All Hosts -> Select Host -> Edit -> Ansible Roles -> Select Role -> Submit
 ```
 
 ### Install and configure Ansible
+
 Since foreman isnt set up with Ansible by default we need to do configure that manually.
 
 Documentation for foreman: `https://theforeman.org/plugins/foreman_ansible/2.x/index.html`
