@@ -156,8 +156,124 @@ Content -> Errata -> Select Errata -> Apply Errata
 ```
 
 ## Install custom software on clients
+These are the main steps that has to be done in order to install custom software on clients
+1. Create GPG key
+1. Create Product
+1. Create Content View
+1. Create Activation Key
+1. Attach subscripton to host with Activation Key
+
+
+### Create GPG key
+```
+Content -> Content Credentials -> Create Content Credential
+```
+
+### Create Product
+```
+# Create Product
+Content -> Products -> Create -> Product
+
+# Create New Repository for the Product
+Newly Created Product -> Repositories -> New Repository
+```
+
+### Create Content View
+```
+# Create Content View
+Content -> Content View -> Create New View
+
+# Add Yum Content to the new view
+Newly Created View -> Yum Content -> Repositories -> Add -> Select Repository -> Add Repositories
+```
+
+### Create Activation Key
+```
+Content -> Activation Keys -> Create Activation Key
+
+# Attach Subscription to Activation Key
+Newly Created Activation Key -> Subscriptions -> Add -> Select Product
+```
+
+### Subscribe Host
+```
+[foo@bar ~]$ sudo subscription-manager register --org="Foo" --activationkey="Bar"
+```
+
 ## Use Satellite server to remotely execute scripts on clients
+### On foreman we have to enable the plugins for remote-execution first.
+```
+foreman-installer --enable-foreman-plugin-remote-execution \
+--enable-foreman-proxy-plugin-remote-execution-ssh
+```
+
+### Create Custom Job Template
+1. Create Template
+  * Hosts -> Job Templates -> New Job Template
+1. Add Name
+  * My First Template
+1. Set a Job category
+1. Paste in a script and save
+```bash
+#!/bin/bash
+echo "Hello World from <%= @host.name %>!"
+```
+
+Go to Hosts -> All Hosts -> Choose a host -> Schedule Remote Job -> Select the Template -> Run Job -> Click the Host on the bottom to see details about the run.
+
 ## Assign an Ansible role to an existing client
+The short answer to this is:
+```
+Hosts -> All Hosts -> Select Host -> Edit -> Ansible Roles -> Select Role -> Submit
+```
+
+### Install and configure Ansible
+Since foreman isnt set up with Ansible by default we need to do configure that manually.
+
+Documentation for foreman: `https://theforeman.org/plugins/foreman_ansible/2.x/index.html`
+
+For Ansible documentation run: `ansible-doc -t callback foreman`
+
+Install Ansible
+```
+sudo yum install ansible -y
+```
+
+```
+cp /etc/ansible/ansible.cfg /etc/ansible/ansible.bak
+```
+
+Configure the callback in ansible.cfg and ensure the following
+
+```ini
+[defaults]
+callback_whitelist = foreman
+```
+
+Add the following to the end of ansible.cfg and insert the URL for your foreman.
+```ini
+[callback_foreman]
+url = 'https://foreman.example.com'
+ssl_cert = /etc/foreman-proxy/ssl_cert.pem
+ssl_key = /etc/foreman-proxy/ssl_key.pem
+verify_certs = /etc/foreman-proxy/ssl_ca.pem
+```
+
+When the callback is whitelisted and the right options are configured nable foreman plugins for Ansible
+```
+foreman-installer --enable-foreman-plugin-ansible \
+--enable-foreman-proxy-plugin-ansible
+```
+
+Add Ansible roles to the roles path
+```
+ansible-galaxy role install arillso.motd -p /etc/ansible/roles/
+```
+
+Add roles from the foreman console
+```
+Configure -> Ansible -> Roles -> Select roles -> Update
+```
 
 # Provision clients
 ## Provision bare metal and virtual clients using kickstarts
