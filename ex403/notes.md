@@ -83,12 +83,14 @@ Content -> Content Views -> Create New View
 Content -> Lifecycle Environment Paths -> Create Environment Path
 
 ## Sign an RPM
+
 https://access.redhat.com/articles/3359321
-*Create gpg key: gpg --gen-key
-*Export key: gpg --export -a "Foreman Buff" > RPM-GPG-KEY-foremanbuff
-*Import key into RPM database: rpm --import RPM-GPG-KEY-foremanbuff
-*Create .rpmmacros file in order to utilize key
-*Sign package
+
+1. Create gpg key: gpg --gen-key
+1. Export key: gpg --export -a "Foreman Buff" > RPM-GPG-KEY-foremanbuff
+1. Import key into RPM database: rpm --import RPM-GPG-KEY-foremanbuff
+1. Create .rpmmacros file in order to utilize key
+1. Sign package
 
 # Manage systems
 
@@ -100,6 +102,7 @@ Content -> Activation Keys -> Create Activation Key
 ```
 
 ## Create host group keys
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/managing_activation_keys
 ```
 Content -> Activation Keys -> 'Key' -> Host Collections -> Add -> 'Select Host Collection' -> Add Selected
@@ -112,6 +115,7 @@ Hosts -> Create Hosts
 # Manage Ansible roles
 
 ## Import Ansible roles
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/administering_red_hat_satellite/chap-red_hat_satellite-administering_red_hat_satellite-managing_ansible_roles
 
 Put roles on Satellite server in /etc/ansible/roles, then import from console.
@@ -119,6 +123,7 @@ Put roles on Satellite server in /etc/ansible/roles, then import from console.
 ## Configure Ansible roles
 
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/managing_hosts/using_ansible_roles
+
 ```
 Configure -> Ansible -> Roles
 ```
@@ -126,6 +131,7 @@ Configure -> Ansible -> Roles
 # Manage Ansible variables
 
 ## Import Ansible variables from an Ansible role
+
 ```
 To import Ansible variables, complete the following steps:
 
