@@ -389,7 +389,7 @@ ssl_key = /etc/foreman-proxy/ssl_key.pem
 verify_certs = /etc/foreman-proxy/ssl_ca.pem
 ```
 
-When the callback is whitelisted and the right options are configured nable foreman plugins for Ansible
+When the callback is whitelisted and the right options are configured enable foreman plugins for Ansible
 ```
 foreman-installer --enable-foreman-plugin-ansible \
 --enable-foreman-proxy-plugin-ansible
