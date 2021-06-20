@@ -46,6 +46,7 @@ Configure -> Ansible Variables
 ```
 
 ## Create and configure Ansible variables
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/administering_red_hat_satellite/chap-red_hat_satellite-administering_red_hat_satellite-managing_ansible_roles#sect-Red_Hat_Satellite-Administering_Red_Hat_Satellite-Creating_Ansible_Variables
 
 ```
@@ -53,9 +54,11 @@ Configure -> Ansible Variables -> New Ansible Variable
 ```
 
 # Manage content and software channels
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/index
 
 ## Synchronize Red Hat Enterprise Linux content
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/importing_red_hat_content#Importing_Red_Hat_Content-Synchronizing_Red_Hat_Repositories
 
 For Web UI Users
@@ -65,12 +68,15 @@ For Web UI Users
 ## Configure subscriptions, content, and content views
 
 ### Subscriptions
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/managing_subscriptions
 
 ### Content
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/importing_custom_content
 
 ### Content Views
+
 https://access.redhat.com/documentation/en-us/red_hat_satellite/6.6/html/content_management_guide/managing_content_views
 
 ```
@@ -80,6 +86,7 @@ Content -> Content Views -> Create New View
 ## Create custom content channels and populate them with software
 
 ## Create and configure development life cycles
+
 Content -> Lifecycle Environment Paths -> Create Environment Path
 
 ## Sign an RPM
@@ -145,6 +152,7 @@ sub   2048R/7EDDB053 2021-06-19 [expires: 2022-06-19]
 ```
 
 ### Export gpg key
+
 ```
 [root@foreman ~]# gpg --list-keys
 /root/.gnupg/pubring.gpg
@@ -156,11 +164,13 @@ uid                  Foreman Labs <foreman.labs@foreman.xyz>
 ```
 
 ### Import key into RPM database
+
 ```
 [root@foreman ~]# rpm --import RPM-GPG-KEY-foremanlabs
 ```
 
 ### Create .rpmmacros file in order to utilize key
+
 This man page `man rpmsign` tells you pretty much all you need to know.
 
 ```
@@ -169,6 +179,7 @@ This man page `man rpmsign` tells you pretty much all you need to know.
 ```
 
 ### Sign package
+
 ```
 [root@foreman ~]# rpm --addsign custom-rpm1-1.0-1.el7.x86_64.rpm 
 Enter pass phrase: 
@@ -317,6 +328,7 @@ Newly Created Activation Key -> Subscriptions -> Add -> Select Product
 ## Use Satellite server to remotely execute scripts on clients
 
 ### On foreman we have to enable the plugins for remote-execution first.
+
 ```
 foreman-installer --enable-foreman-plugin-remote-execution \
 --enable-foreman-proxy-plugin-remote-execution-ssh
